@@ -14,22 +14,32 @@ Question 1.
 
 Supervised learning is a form of machine learning task where data consists of input and output pairs. This means that one can evaluate a model by comparing the predicted values with the true output values. However this is impossible in case of unsupervised learning where data only consists of inputs.
 
+
 Question 2.
 
 Regression model is used for data with continuous $Y$s, which means $Y$s have numerical values. On the other hand, classification model is used when $Y$s have categorical values.
 
+
 Question 3.
 For regression problems, Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) are commonly used. For classification problems, confusion matrix and AUC-ROC are some of the most popular metrics.
+
 
 Question 4.
 - Descriptive models: to find the best way to describe or summarize the characteristics of data
 - Inferential models: to test theories and make generalizations about the larger population
 - Predictive models: to predict and forecast future outcomes with minimum reducible error
 
+
 Question 5.
+- Mechanistic model aims to predict future data using a theory, and empirically-driven model focuses on real-world data to develop a theory. They differ in the way they approach and view the relationship between theory and data. However, they both have a risk of overfitting. 
+- I think mechanistic model is easier to understand because we draw a theory from the data that we actually have and therefore easier to see that it has some proof that the theory makes sense.
+- Since both models have a risk of being overfitted, bias-variance tradeoff  implies that a model should be balanced between overfitting and underfitting by controlling bias and variance.
 
 
 Question 6.
+- First question can be classified as predictive. The goal is basically to predict people's intention with the data we have. 
+- Second question would be classified as inferential. Since inferential aims to find the features that are significant and to state relationship between input and output. In this case the goal is to test the relationship between support for the candidate and personal contact.
+
 
 ## Exercises
 
@@ -43,26 +53,36 @@ Exercise 1
 ```{r}
 ggplot(mpg, aes(x = hwy)) + geom_histogram()
 ```
+The histogram shows that there is high count of highway mpg values among the range of 20 to 30. And also populated around 15.
+
 
 Exercise 2.
 
 ```{r}
 ggplot(mpg, aes(x = hwy, y = cty)) + geom_point()
 ```
+It seems like there is a positive correlation between hwy and cty. Since this both variables indicate are mpg values, this means that a car with high mpg at city had a high mpg at the highway too. 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 Exercise 3.
 
 ```{r}
-ggplot(mpg, aes(x = manufacturer)) + geom_bar() + coord_flip()
+library(forcats)
+mpg %>%
+  ggplot(aes(x = fct_infreq(manufacturer))) +
+  geom_bar() + coord_flip() + 
+  labs(x = "manufacturer")
 ```
+Lincoln produced the least cars and Dodge produced the most cars.
+
 
 Exercise 4.
 
 ```{r}
-ggplot(mpg, aes(x = cyl, y = hwy)) + geom_boxplot()
+ggplot(mpg, aes(group = cyl, x = cyl, y = hwy)) + geom_boxplot()
 ```
+The number of cylinder seems to have a negative correlation with highway mpg.
+
 
 Exercise 5.
 
@@ -74,8 +94,10 @@ install.packages('corrplot')
 library(corrplot)
 my_data <- select(mpg, displ, cyl, cty, hwy)
 M = cor(my_data)
-corrplot(M, type = 'lower')
+corrplot(M, method = 'number', type = 'lower')
 ```
+Displacement and cylinder, Highway mpg and city mpg have positive correlation with each other. On the other hand, number of cylinder has negative correlation with city mpg and highway mpg. This result indicates that bigger engine displacement and higher number of cylinders result is low mpg within both city and highway. I was surprised to see that engine displacement and mpg values have negative correlation because I thought higher engine displacement would indicate that the car functions better.
+
 
 Exercise 6.
 
@@ -85,7 +107,7 @@ install.packages('ggthemes')
 
 ```{r}
 library('ggthemes')
-ggplot(mpg, aes(x = hwy, y = class)) + geom_boxplot() + labs(x = 'Highway MPG', y = 'Veichle Class') + theme_economist_white(gray_bg = FALSE)
+ggplot(mpg, aes(x = hwy, y = class)) + geom_jitter(color = 'grey') + geom_boxplot(fill = NA) + labs(x = 'Highway MPG', y = 'Veichle Class') + theme(panel.grid.major = element_line(colour = 'grey')) + theme(panel.background = element_rect(fill = "white", colour = "grey")) + theme(panel.border = element_rect(colour = 'white', fill = NA)) + theme(axis.ticks = element_blank()) + theme(axis.line.x = element_line(size = 1, colour = "black"))
 ```
 
 Exercise 7.
