@@ -1,0 +1,101 @@
+---
+title: "HW1"
+output: html_document
+date: '2022-04-01'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Questions 
+
+Question 1.
+
+Supervised learning is a form of machine learning task where data consists of input and output pairs. This means that one can evaluate a model by comparing the predicted values with the true output values. However this is impossible in case of unsupervised learning where data only consists of inputs.
+
+Question 2.
+
+Regression model is used for data with continuous $Y$s, which means $Y$s have numerical values. On the other hand, classification model is used when $Y$s have categorical values.
+
+Question 3.
+For regression problems, Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) are commonly used. For classification problems, confusion matrix and AUC-ROC are some of the most popular metrics.
+
+Question 4.
+- Descriptive models: to find the best way to describe or summarize the characteristics of data
+- Inferential models: to test theories and make generalizations about the larger population
+- Predictive models: to predict and forecast future outcomes with minimum reducible error
+
+Question 5.
+
+
+Question 6.
+
+## Exercises
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+Exercise 1
+
+```{r}
+ggplot(mpg, aes(x = hwy)) + geom_histogram()
+```
+
+Exercise 2.
+
+```{r}
+ggplot(mpg, aes(x = hwy, y = cty)) + geom_point()
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Exercise 3.
+
+```{r}
+ggplot(mpg, aes(x = manufacturer)) + geom_bar() + coord_flip()
+```
+
+Exercise 4.
+
+```{r}
+ggplot(mpg, aes(x = cyl, y = hwy)) + geom_boxplot()
+```
+
+Exercise 5.
+
+```{r}
+install.packages('corrplot')
+```
+
+```{r}
+library(corrplot)
+my_data <- select(mpg, displ, cyl, cty, hwy)
+M = cor(my_data)
+corrplot(M, type = 'lower')
+```
+
+Exercise 6.
+
+```{r}
+install.packages('ggthemes')
+```
+
+```{r}
+library('ggthemes')
+ggplot(mpg, aes(x = hwy, y = class)) + geom_boxplot() + labs(x = 'Highway MPG', y = 'Veichle Class') + theme_economist_white(gray_bg = FALSE)
+```
+
+Exercise 7.
+
+```{r}
+ggplot(mpg, aes(x = class, y = hwy, fill = drv)) + geom_boxplot()
+```
+
+Exercise 8.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + geom_point() + geom_smooth(aes(linetype = drv), color = 'blue', se = FALSE)
+```
